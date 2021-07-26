@@ -7,6 +7,10 @@ let isUserInteracting = false,
     lat = 0, onPointerDownLat = 0,
     phi = 0, theta = 0;
 
+let planes=[];
+const raycaster = new THREE.Raycaster();
+
+
 init();
 animate();
 
@@ -27,13 +31,30 @@ function init() {
 
     const mesh = new THREE.Mesh( geometry, material );
 
+
     scene.add( mesh );
+
+    const geometry2 = new THREE.PlaneGeometry( 20, 20 );
+    const material2 = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.DoubleSide} );
+    let plane = new THREE.Mesh( geometry2, material2 );
+    plane.position.set(100,0,100)
+    planes.push(plane);
+    scene.add( plane );
+
+    plane = new THREE.Mesh( geometry2, material2 );
+    plane.position.set(50,50,100);
+    planes.push(plane);
+    scene.add( plane );
+
+    planes.forEach(plane => {
+        plane.lookAt(camera.position);
+    });
+
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
-
     container.style.touchAction = 'none';
     container.addEventListener( 'pointerdown', onPointerDown );
 
@@ -111,8 +132,33 @@ function onPointerMove( event ) {
 
     lon = ( onPointerDownMouseX - event.clientX ) * cameraSpeed + onPointerDownLon;
     lat = ( event.clientY - onPointerDownMouseY ) * cameraSpeed + onPointerDownLat;
-
+    planes.forEach(plane => {
+        plane.lookAt(camera.position);
+    });
+    let pos = toScreenPosition(planes[1], camera);
+    document.getElementById("hotspot").style.transform = "translate("+ pos.x +"px, "+ pos.y +"px)";
 }
+
+function toScreenPosition(obj, camera)
+{
+    var vector = new THREE.Vector3();
+
+    var widthHalf = 0.5*renderer.context.canvas.width;
+    var heightHalf = 0.5*renderer.context.canvas.height;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(camera);
+
+    vector.x = ( vector.x * widthHalf ) + widthHalf;
+    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+    return { 
+        x: vector.x,
+        y: vector.y
+    };
+
+};
 
 function onPointerUp() {
 
@@ -146,8 +192,6 @@ function animate() {
 function update() {
 
     if ( isUserInteracting === false ) {
-
-        lon += 0.01;
 
     }
 
