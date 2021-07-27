@@ -10,13 +10,14 @@ let isUserInteracting = false,
 let planes=[];
 let hotspots = document.getElementsByClassName("hotspot");
 
-init();
+let imageUrl = document.getElementById("panorama-image-url").value;
+init(imageUrl);
 animate();
 createHotspots();
 updateHotspotsPositions()
 
 
-function init() {
+function init(imageUrl) {
 
     const container = document.getElementById( 'container' );
 
@@ -28,7 +29,7 @@ function init() {
     // invert the geometry on the x-axis so that all of the faces point inward
     geometry.scale( - 1, 1, 1 );
 
-    const texture = new THREE.TextureLoader().load( 'pano.jpg' );
+    const texture = new THREE.TextureLoader().load( imageUrl );
     const material = new THREE.MeshBasicMaterial( { map: texture } );
 
     const mesh = new THREE.Mesh( geometry, material );
@@ -226,7 +227,7 @@ function createHotspots()
 {
     const geometry = new THREE.PlaneGeometry( 20, 20 );
     //change to Backside for invisible squares
-    const material = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.FrontSide} );
+    const material = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.BackSide} );
     let plane = new THREE.Mesh( geometry, material );
     for (let i = 0; i < hotspots.length; i++)
     {
