@@ -119,28 +119,6 @@ function onPointerMove( event ) {
     updateHotspotsPositions();
 }
 
-function toScreenPosition(obj, camera)
-{
-    var vector = new THREE.Vector3();
-
-    var widthHalf = 0.5*renderer.context.canvas.width;
-    var heightHalf = 0.5*renderer.context.canvas.height;
-
-    obj.updateMatrixWorld();
-    vector.setFromMatrixPosition(obj.matrixWorld);
-    vector.project(camera);
-
-    vector.x = ( vector.x * widthHalf ) + widthHalf;
-    vector.y = - ( vector.y * heightHalf ) + heightHalf;
-
-    return { 
-        x: vector.x,
-        y: vector.y
-    };
-
-};
-
-
 function onPointerUp() {
 
     if ( event.isPrimary === false ) return;
@@ -190,20 +168,65 @@ function update() {
 
 }
 
+function toScreenPosition(obj, camera)
+{
+    var vector = new THREE.Vector3();
+
+    var widthHalf = 0.5*renderer.context.canvas.width;
+    var heightHalf = 0.5*renderer.context.canvas.height;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(camera);
+
+    vector.x = ( vector.x * widthHalf ) + widthHalf;
+    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+    return { 
+        x: vector.x,
+        y: vector.y
+    };
+
+}
+
+function isInView(camera, object)
+{
+    camera.updateMatrix();
+    camera.updateMatrixWorld();
+    var frustum = new THREE.Frustum();
+    frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));  
+
+    // Your 3d point to check
+    var pos = object.position;
+    if (frustum.containsPoint(pos)) {
+        return true;
+    }
+    return false;
+}
+
 function updateHotspotsPositions()
 {
     for (let i = 0; i < planes.length; i++) 
     {
         planes[i].lookAt(camera.position);
         let pos = toScreenPosition(planes[i], camera);
-        hotspots[i].style.transform = "translate("+ pos.x +"px, "+ pos.y +"px)";
+        if(isInView(camera, planes[i]))
+        {
+            hotspots[i].classList.remove("hidden");
+            hotspots[i].style.transform = "translate("+ pos.x +"px, "+ pos.y +"px)";
+        }
+        else
+        {
+            hotspots[i].classList.add("hidden");
+        }
     }
 }
 
 function createHotspots()
 {
     const geometry = new THREE.PlaneGeometry( 20, 20 );
-    const material = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.DoubleSide} );
+    //change to Backside for invisible squares
+    const material = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.FrontSide} );
     let plane = new THREE.Mesh( geometry, material );
     for (let i = 0; i < hotspots.length; i++)
     {
