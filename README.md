@@ -5,7 +5,7 @@
   
 ![image](https://user-images.githubusercontent.com/39927846/127176325-d9f3a35d-94e2-4af6-8e55-16515b5697bf.png)
 
-- Adding points on panorama:
+- Adding points in panorama:
 
   To add a point on panorama you must add a div as seen below inside the div with 'container' id.
   
