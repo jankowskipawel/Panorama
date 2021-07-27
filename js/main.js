@@ -8,11 +8,13 @@ let isUserInteracting = false,
     phi = 0, theta = 0;
 
 let planes=[];
-const raycaster = new THREE.Raycaster();
-
+let hotspots = document.getElementsByClassName("hotspot");
 
 init();
 animate();
+createHotspots();
+updateHotspotsPositions()
+
 
 function init() {
 
@@ -33,23 +35,6 @@ function init() {
 
 
     scene.add( mesh );
-
-    const geometry2 = new THREE.PlaneGeometry( 20, 20 );
-    const material2 = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.DoubleSide} );
-    let plane = new THREE.Mesh( geometry2, material2 );
-    plane.position.set(100,0,100)
-    planes.push(plane);
-    scene.add( plane );
-
-    plane = new THREE.Mesh( geometry2, material2 );
-    plane.position.set(50,50,100);
-    planes.push(plane);
-    scene.add( plane );
-
-    planes.forEach(plane => {
-        plane.lookAt(camera.position);
-    });
-
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -97,7 +82,6 @@ function init() {
     } );
 
     window.addEventListener( 'resize', onWindowResize );
-
 }
 
 function onWindowResize() {
@@ -132,11 +116,7 @@ function onPointerMove( event ) {
 
     lon = ( onPointerDownMouseX - event.clientX ) * cameraSpeed + onPointerDownLon;
     lat = ( event.clientY - onPointerDownMouseY ) * cameraSpeed + onPointerDownLat;
-    planes.forEach(plane => {
-        plane.lookAt(camera.position);
-    });
-    let pos = toScreenPosition(planes[1], camera);
-    document.getElementById("hotspot").style.transform = "translate("+ pos.x +"px, "+ pos.y +"px)";
+    updateHotspotsPositions();
 }
 
 function toScreenPosition(obj, camera)
@@ -160,6 +140,7 @@ function toScreenPosition(obj, camera)
 
 };
 
+
 function onPointerUp() {
 
     if ( event.isPrimary === false ) return;
@@ -179,7 +160,7 @@ function onDocumentMouseWheel( event ) {
     cameraSpeed = THREE.MathUtils.clamp( cameraSpeed, 0.01, 0.1);
 
     camera.updateProjectionMatrix();
-
+    updateHotspotsPositions();
 }
 
 function animate() {
@@ -207,4 +188,30 @@ function update() {
 
     renderer.render( scene, camera );
 
+}
+
+function updateHotspotsPositions()
+{
+    for (let i = 0; i < planes.length; i++) 
+    {
+        planes[i].lookAt(camera.position);
+        let pos = toScreenPosition(planes[i], camera);
+        hotspots[i].style.transform = "translate("+ pos.x +"px, "+ pos.y +"px)";
+    }
+}
+
+function createHotspots()
+{
+    const geometry = new THREE.PlaneGeometry( 20, 20 );
+    const material = new THREE.MeshBasicMaterial( {color: 0xFF8000, side: THREE.DoubleSide} );
+    let plane = new THREE.Mesh( geometry, material );
+    for (let i = 0; i < hotspots.length; i++)
+    {
+        plane = new THREE.Mesh( geometry, material );
+        let pos = hotspots[i].children[0].value.split(',');
+        plane.position.set(pos[0],pos[1],pos[2])
+        planes.push(plane);
+        scene.add(plane);
+    }
+    
 }
