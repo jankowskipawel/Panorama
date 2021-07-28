@@ -9,6 +9,7 @@ let isUserInteracting = false,
 
 let planes=[];
 let hotspots = document.getElementsByClassName("hotspot");
+let popups = [];
 
 let imageUrl = document.getElementById("panorama-image-url").value;
 init(imageUrl);
@@ -236,13 +237,24 @@ function createHotspots()
         plane.position.set(pos[0],pos[1],pos[2])
         planes.push(plane);
         scene.add(plane);
+        if(hotspots[i].children.length==3)
+        {
+            popups.push(hotspots[i].children[2]);
+        }
     }
 }
+
 
 function toggleVisibility(element)
 {
     let parent = element.parentElement;
     let popup = parent.children[2];
+    popups.forEach(ppp => {
+        if(ppp!=popup)
+        {
+            ppp.classList.add("hidden");
+        }
+    });
     if(popup.classList.contains("hidden"))
     {
         popup.classList.remove("hidden");
@@ -251,4 +263,5 @@ function toggleVisibility(element)
     {
         popup.classList.add("hidden");
     }
+    
 }
