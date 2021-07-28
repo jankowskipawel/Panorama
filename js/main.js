@@ -252,15 +252,3 @@ function toggleVisibility(element)
         popup.classList.add("hidden");
     }
 }
-
-function toggleVisibilityDirectly(popup)
-{
-    if(popup.classList.contains("hidden"))
-    {
-        popup.classList.remove("hidden");
-    }
-    else
-    {
-        popup.classList.add("hidden");
-    } 
-}
