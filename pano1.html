@@ -11,15 +11,18 @@
         <div id="container" style="touch-action: none;">
 		
 			<div class="hotspot">
-				<input class="hidden" value="100,0,0">
+				<input class="hidden" value="-100,0,100">
 				<a href="pano2.html"><button class="hotspot-button">🠕</button></a>
 			</div>
 			
 			<div class="hotspot">
-				<input class="hidden" value="-100,0,100">
-				<a href="pano2.html"><button class="hotspot-button">🠕</button></a>
+				<input class="hidden" value="100,0,0">
+				<button onclick="toggleVisibility(this)" class="hotspot-button">ℹ️</button>
+				<div class="popup hidden">
+					<h1>Fabryka Michelin</h1>
+					<p>Największa fabryka w Olsztynie <br><a target="_blank" href="">Czytaj więcej...</a></p>
+				</div>
 			</div>
-
 		</div>
 
 
