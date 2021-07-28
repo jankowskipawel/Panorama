@@ -123,3 +123,8 @@ a, button, input, select {
 	border-radius: 10%;
 	border: rgba(255, 255, 255, 0.87) 2px solid;
 }
+
+.info-img
+{
+	cursor: pointer;
+}
