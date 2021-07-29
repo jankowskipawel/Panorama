@@ -265,3 +265,10 @@ function toggleVisibility(element)
     }
     
 }
+
+function hideAllPopups()
+{
+    popups.forEach(ppp => {
+        ppp.classList.add("hidden");
+    });
+}

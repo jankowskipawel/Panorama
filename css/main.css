@@ -128,3 +128,9 @@ a, button, input, select {
 {
 	cursor: pointer;
 }
+
+.hidden-btn
+{
+	border: none;
+    background:none;
+}
