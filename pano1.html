@@ -9,7 +9,6 @@
 		<script src="js/three.js"></script>
 		<input class="hidden" id="panorama-image-url" value="pano1.jpg">
         <div id="container" style="touch-action: none;">
-		
 			<div class="hotspot">
 				<input class="hidden" value="-200,100,100">
 				<a href="pano2.html"><button class="hotspot-button">🠕</button></a>
@@ -17,20 +16,22 @@
 			
 			<div class="hotspot">
 				<input class="hidden" value="100,0,0">
-				<button class="hidden-btn" onclick="toggleVisibility(this)" onfocusout="hideAllPopups()"><img src="info.png" class="info-img"/></button>
-				<div class="popup hidden">
-					<h1>Fabryka Michelin</h1>
-					<p>Największa fabryka w Olsztynie <br><a target="_blank" href="">Czytaj więcej...</a></p>
-				</div>
+				<button class="hidden-btn" onclick="showPopup(this)" onblur="hideAllPopups()"><img src="info.png" class="info-img"/>
+					<div class="popup hidden">
+						<h1>Fabryka Michelin</h1>
+						<p>Największa fabryka w Olsztynie <br><br><a target="_blank" href="">Czytaj więcej...</a></p>
+					</div>
+				</button>
 			</div>
 
 			<div class="hotspot">
 				<input class="hidden" value="-100,0,100">
-				<button class="hidden-btn" onclick="toggleVisibility(this)" onfocusout="hideAllPopups()"><img src="info.png" class="info-img"/></button>
-				<div class="popup hidden">
-					<h1>Jezioro</h1>
-					<p>Jezioro w Olsztynie <br><a target="_blank" href="">Czytaj więcej...</a></p>
-				</div>
+				<button class="hidden-btn" onclick="showPopup(this)" onblur="hideAllPopups()"><img src="info.png" class="info-img"/>
+					<div class="popup hidden">
+						<h1>Jezioro</h1>
+						<p>Jezioro w Olsztynie <br><br><a target="_blank" href="">Czytaj więcej...</a></p>
+					</div>
+				</button>
 			</div>
 		</div>
 

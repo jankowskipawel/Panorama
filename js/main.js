@@ -237,9 +237,9 @@ function createHotspots()
         plane.position.set(pos[0],pos[1],pos[2])
         planes.push(plane);
         scene.add(plane);
-        if(hotspots[i].children.length==3)
+        if(hotspots[i].children[1].classList.contains("hidden-btn"))
         {
-            popups.push(hotspots[i].children[2]);
+            popups.push(hotspots[i].children[1].children[1]);
         }
     }
 }
@@ -248,7 +248,7 @@ function createHotspots()
 function toggleVisibility(element)
 {
     let parent = element.parentElement;
-    let popup = parent.children[2];
+    let popup = parent.children[1].children[1];
     popups.forEach(ppp => {
         if(ppp!=popup)
         {
@@ -271,4 +271,26 @@ function hideAllPopups()
     popups.forEach(ppp => {
         ppp.classList.add("hidden");
     });
+}
+
+function showPopup(element)
+{
+    let parent = element.parentElement;
+    let popup = parent.children[1].children[1];
+    popups.forEach(ppp => {
+        if(ppp!=popup)
+        {
+            ppp.classList.add("hidden");
+        }
+    });
+    popup.classList.remove("hidden");
+}
+
+buttons = document.getElementsByClassName("hidden-btn");
+for (let i = 0; i < buttons.length; i++)
+{
+    buttons[i].onblur = function() {
+        var self = this;
+        setTimeout(function() { hideAllPopups(); }, 200);
+      }
 }

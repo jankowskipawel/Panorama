@@ -122,6 +122,8 @@ a, button, input, select {
 	padding: 5px;
 	border-radius: 10%;
 	border: rgba(255, 255, 255, 0.87) 2px solid;
+	color: #fff;
+	text-transform: none;
 }
 
 .info-img
@@ -133,4 +135,10 @@ a, button, input, select {
 {
 	border: none;
     background:none;
+}
+
+.hide-all-div
+{
+	height: 100%;
+	width: 100%;
 }
